@@ -51,6 +51,22 @@ class ConvUNet32(nn.Module):
         self.conv_out=nn.Conv2d(features[0],out_channels,kernel_size=3,padding=1)
         self.out_act=out_act
 
+        for name, param in self.named_parameters():
+            if "conv" in name and 'weight' in name:
+                n = param.size(0) * param.size(2) * param.size(3)
+                param.data.normal_().mul_(np.sqrt(2. / n))
+                #print(name)
+            elif "norm" in name and 'weight' in name:
+                param.data.fill_(1)
+                #print(name)
+            elif "norm" in name and 'bias' in name:
+                param.data.fill_(0)
+                #print(name)
+            else:
+                pass
+                #print("no init",name)
+
+
     def forward(self,x):
         saves=[x]
         x=self.cba_in2(self.cba_in1(x))
@@ -103,6 +119,20 @@ class ConvClassifier3d_smallz(nn.Module):
         self.lin_2=nn.Linear(256,128)
         self.lin_out=nn.Linear(128,outdim)
 
+        for name, param in self.named_parameters():
+            if "conv" in name and 'weight' in name:
+                n = param.size(0) * param.size(2) * param.size(3)* param.size(4)
+                param.data.normal_().mul_(np.sqrt(2. / n))
+                #print(name)
+            elif "norm" in name and 'weight' in name:
+                param.data.fill_(1)
+                #print(name)
+            elif "norm" in name and 'bias' in name:
+                param.data.fill_(0)
+                #print(name)
+            else:
+                pass
+                #print("no init",name)
 
     def forward(self,x):
         b=x.size(0)
@@ -151,6 +181,20 @@ class ConvClassifier2d(nn.Module):
         self.lin_2=nn.Linear(256,128)
         self.lin_out=nn.Linear(128,outdim)
 
+        for name, param in self.named_parameters():
+            if "conv" in name and 'weight' in name:
+                n = param.size(0) * param.size(2) * param.size(3)
+                param.data.normal_().mul_(np.sqrt(2. / n))
+                #print(name)
+            elif "norm" in name and 'weight' in name:
+                param.data.fill_(1)
+                #print(name)
+            elif "norm" in name and 'bias' in name:
+                param.data.fill_(0)
+                #print(name)
+            else:
+                pass
+                #print("no init",name)
 
     def forward(self,x):
         b=x.size(0)
